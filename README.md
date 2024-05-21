@@ -22,4 +22,4 @@ __Fargate hosted:__
 
 
 ## 📚 Examples
-- React SPA SSG: [git@github.com:jim9527/REACT-SPA-SSG.git](git@github.com:jim9527/REACT-SPA-SSG.git)
+- React SPA SSG: [git@github.com:jim9527/REACT-SPA-SSG.git](https://github.com/jim9527/REACT-SPA-SSG)  
