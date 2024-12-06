@@ -9,6 +9,10 @@ Parameters:
     Type: String
     Default: nginx
     Description: A name for the service
+  HealthCheckPath:
+    Type: String
+    Default: /
+    Description: health check path for target group
   ContainerPort:
     Type: Number
     Default: 80
@@ -117,7 +121,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       HealthCheckIntervalSeconds: 6
-      HealthCheckPath: /
+      HealthCheckPath: !Sub ${HealthCheckPath}
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
