@@ -55,6 +55,9 @@ Resources:
           Image: 'httpd:2.4'
           PortMappings:
             - ContainerPort: !Ref 'ContainerPort'
+          Environment:
+            - Name: PORT
+              Value: !Ref ContainerPort
           LogConfiguration:
             LogDriver: 'awslogs'
             Options:
@@ -69,7 +72,8 @@ Resources:
               style=color:white;text-align:center> <h1>Amazon ECS Sample
               App</h1> <h2>Congratulations!</h2> <p>Your application is now
               running on a container in Amazon ECS.</p> </div></body></html>' > 
-              /usr/local/apache2/htdocs/index.html && httpd-foreground"
+              /usr/local/apache2/htdocs/index.html && 
+              sed -i \"s/^Listen 80$/Listen ${PORT}/\" /usr/local/apache2/conf/httpd.conf && httpd-foreground"
           EntryPoint:
             - sh
             - '-c'

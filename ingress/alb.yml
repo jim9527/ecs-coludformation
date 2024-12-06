@@ -8,6 +8,7 @@ Parameters:
 Resources:
   EcsSecurityGroupIngressFromPublicALB:
     Type: AWS::EC2::SecurityGroupIngress
+    DeletionPolicy: Delete
     Properties:
       Description: Ingress from the public ALB
       GroupId:
@@ -21,6 +22,7 @@ Resources:
   # internet and directing it to public facing microservices
   PublicLoadBalancerSG:
     Type: AWS::EC2::SecurityGroup
+    DeletionPolicy: Delete
     Properties:
       GroupDescription: Access to the public facing load balancer
       VpcId:
@@ -31,7 +33,13 @@ Resources:
             IpProtocol: -1
   PublicLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    DeletionPolicy: Delete
     Properties:
+      Name:
+        Fn::Join:
+          - '-'
+          - - Fn::ImportValue: !Sub ${EnvironmentName}:ClusterName
+            - 'alb'
       Scheme: internet-facing
       LoadBalancerAttributes:
       - Key: idle_timeout.timeout_seconds
@@ -46,6 +54,7 @@ Resources:
   # initially, before any real service target groups have been added.
   DummyTargetGroupPublic:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    DeletionPolicy: Delete
     Properties:
       HealthCheckIntervalSeconds: 6
       HealthCheckPath: /
@@ -59,6 +68,7 @@ Resources:
         Fn::ImportValue: !Sub ${EnvironmentName}:VpcId
   PublicLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
+    DeletionPolicy: Delete
     DependsOn:
       - PublicLoadBalancer
     Properties:
